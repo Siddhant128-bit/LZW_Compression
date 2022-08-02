@@ -66,6 +66,7 @@ def get_text_from_file(file_name,flag):
         return input_str[0],input_dct
 
 def LZW_Compress(file_name,s_file_name):
+    print('Compression ')
     input_str=get_text_from_file(file_name,0)
     print(f'Initial String: {input_str}')
     initial_LZW_dictionary=primary_index_entry(input_str,s_file_name)
@@ -78,27 +79,29 @@ def decompress(string_val,dictionary_val,to_save_name):
     start_from_val=len(dictionary_val)+1
     partial=''
     for c,i in enumerate(string_val):
-        print(i)
         if c==0:
             decode_inst=dictionary_val[i]
             partial=decode_inst
         else: 
             decode_inst=dictionary_val[i]
-            print(partial,decode_inst)
             entry=partial+decode_inst[0]
             partial=decode_inst
             dictionary_val[str(start_from_val)]=entry
             start_from_val+=1
         #print(dictionary_val)
         uncompressed_str.append(decode_inst)
-        with open(to_save_name+'.txt','w') as f:
-            f.write(''.join(uncompressed_str))
+    with open(to_save_name+'.txt','w') as f:
+        f.write(''.join(uncompressed_str))
+    return ''.join(uncompressed_str)
     
     uncompressed_str=''.join(uncompressed_str)
     return uncompressed_str
 def LZW_Decompress(file,s_file_name):
+    print('Decompression ')
     input_str,initial_LZW_dictionary=get_text_from_file(file,1)
+    print(f'Compressed Text: {input_str}')
     uncompressed_txt=decompress(input_str,initial_LZW_dictionary,s_file_name)
+    print(f'UnCompressed Text: {uncompressed_txt}')
     
 
 if __name__=='__main__':

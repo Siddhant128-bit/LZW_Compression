@@ -1,13 +1,13 @@
 import json
 
-def primary_index_entry(input_str):
+def primary_index_entry(input_str,s_file_name):
     primary_index_values={}
     key_val=1
     for i in input_str:
         if i not in list(primary_index_values.values()):
             primary_index_values[key_val]=i
             key_val+=1
-    with open('compressed_file.json','w')  as f:
+    with open(s_file_name+'.json','w')  as f:
         f.write(json.dumps(primary_index_values))
     return primary_index_values
 
@@ -35,7 +35,7 @@ def get_final_index_entry(input_str,initial_LZW_dictionary):
     #print(initial_LZW_dictionary)
     return initial_LZW_dictionary
 
-def compress_from_dictionary(input_str,start_from,Final_LZW_dictionary):
+def compress_from_dictionary(input_str,start_from,Final_LZW_dictionary,final_file_name):
     final_compressed_val=''
     values=list(Final_LZW_dictionary.values())
     values.append(input_str[-1])
@@ -50,7 +50,7 @@ def compress_from_dictionary(input_str,start_from,Final_LZW_dictionary):
     
     
     print(f'Final Compressed Form: {final_compressed_val}')
-    with open('compressed_file.txt','w') as f:
+    with open(final_file_name+'.txt','w') as f:
         f.write(final_compressed_val)
 
     return final_compressed_val
@@ -65,15 +65,15 @@ def get_text_from_file(file_name,flag):
             input_dct=json.load(f)
         return input_str[0],input_dct
 
-def LZW_Compress(file_name):
+def LZW_Compress(file_name,s_file_name):
     input_str=get_text_from_file(file_name,0)
     print(f'Initial String: {input_str}')
-    initial_LZW_dictionary=primary_index_entry(input_str)
+    initial_LZW_dictionary=primary_index_entry(input_str,s_file_name)
     t_initial_dictionary=initial_LZW_dictionary.copy()
     Final_LZW_dictionary=get_final_index_entry(input_str,t_initial_dictionary)
-    compress_from_dictionary(input_str,len(initial_LZW_dictionary),Final_LZW_dictionary)
+    compress_from_dictionary(input_str,len(initial_LZW_dictionary),Final_LZW_dictionary,s_file_name)
 
-def decompress(string_val,dictionary_val):
+def decompress(string_val,dictionary_val,to_save_name):
     uncompressed_str=[]
     start_from_val=len(dictionary_val)+1
     partial=''
@@ -91,13 +91,23 @@ def decompress(string_val,dictionary_val):
             start_from_val+=1
         #print(dictionary_val)
         uncompressed_str.append(decode_inst)
+        with open(to_save_name+'.txt','w') as f:
+            f.write(''.join(uncompressed_str))
     
     uncompressed_str=''.join(uncompressed_str)
     return uncompressed_str
-def LZW_Decompress(file):
+def LZW_Decompress(file,s_file_name):
     input_str,initial_LZW_dictionary=get_text_from_file(file,1)
-    uncompressed_txt=decompress(input_str,initial_LZW_dictionary)
+    uncompressed_txt=decompress(input_str,initial_LZW_dictionary,s_file_name)
     
 
-#LZW_Compress('Initial_File.txt')
-LZW_Decompress('compressed_file.txt')
+if __name__=='__main__':
+    encryption_flag=input('Enter 1 to encrypt, 2 to decrypt: ')
+    if int(encryption_flag)==1:
+        original_file_name=input('Enter path of file to compress: ')
+        compressed_file_name=input('Enter the name of compressed file to save: ')
+        LZW_Compress(original_file_name,compressed_file_name)
+    else: 
+        original_file_name=input('Enter path of file to decompress: ')
+        decompress_file_name=input('Enter the name of decompress file to save: ')
+        LZW_Decompress(original_file_name,decompress_file_name)

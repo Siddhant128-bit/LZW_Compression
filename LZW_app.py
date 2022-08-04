@@ -93,6 +93,7 @@ def decompress(string_val,dictionary_val):
         uncompressed_str.append(decode_inst)
     
     uncompressed_str=''.join(uncompressed_str)
+    print(uncompressed_str)
     return uncompressed_str
 def LZW_Decompress(file):
     input_str,initial_LZW_dictionary=get_text_from_file(file,1)

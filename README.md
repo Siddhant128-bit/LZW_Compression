@@ -1,6 +1,9 @@
-# LZW_Compression
-Follow the flow of the code and It will compress any file 
-run encoding_new.py to encode the file 
-run decoding.py to decode the file 
-give the directory address of the file as input 
-try it on checking.txt note file
+<h1 align='center'>LZW_Compression</h1>
+Run the single 'LZW_app.py' and follow the procedure to understand the working of this app, It can compress and decompress files <br><br>
+<h2> Theory: </h2><br>
+To understand the theory behind it all please refer to these videos where the theory has been explained thoroughly
+<ul>
+    <li> Part 1: <a href='https://www.youtube.com/watch?v=9gkiphD-VIY'> LZW Compression Theory </a></li>
+    <li> Part 2: <a href='https://www.youtube.com/watch?v=XSYSVEqFnes'> LZW Decompressin Theory </a></li>
+</ul>
+
